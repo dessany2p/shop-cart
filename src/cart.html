@@ -23,24 +23,29 @@
             <span class="categories__name">Количество</span>
             <span class="categories__name">Стоимость</span>
          </div>
-         <div class="categories__item">
-            <img src="./image/cart/1.png" alt="" class="categories__image">
-            <span class="categories__name-item">Apple MacBook Air 13</span>
 
-            <div class="counter" data-counter>
-               <div class="counter__input">
-                  <input type="text" disabled value="1">
+         <div class="add__cards">
+            <div class="categories__item">
+               <!-- исходный -->
+               <img src="./image/cart/1.png" alt="" class="categories__image">
+               <span class="categories__name-item">Apple MacBook Air 13</span>
+
+               <div class="counter" data-counter>
+                  <div class="counter__input">
+                     <input type="text" disabled value="1">
+                  </div>
+                  <div class="counter__buttons-container">
+                     <button class="counter__button button__minus">⮟</button>
+                     <button class="counter__button button__plus">⮝</button>
+                  </div>
                </div>
-               <div class="counter__buttons-container">
-                  <button class="counter__button button__minus">⮟</button>
-                  <button class="counter__button button__plus">⮝</button>
+               <div class="categories__price">
+                  <span class="price__item">110 000 руб.</span>
                </div>
+               <span class="categories__close">X</span>
             </div>
-            <div class="categories__price">
-               <span class="price__item">110 000 руб.</span>
-            </div>
-            <span class="categories__close">X</span>
          </div>
+
          <div class="categories__item">
             <img src="./image/cart/2.png" alt="" class="categories__image">
             <span class="categories__name-item">Apple watch</span>
@@ -83,7 +88,9 @@
       </div>
 
    </div>
-   <!-- <script src="./script.js"></script> -->
+   <script src="./script.js"></script>
+   <script src="./cart.js"></script>
+
 </body>
 
 </html>

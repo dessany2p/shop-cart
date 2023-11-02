@@ -199,8 +199,8 @@ h6 {
    // .card__image
 
    &__image {
-      height: 100%;
-      width: 100%;
+      max-height: auto;
+      max-width: 100%;
       object-fit: cover;
    }
 
@@ -214,6 +214,31 @@ h6 {
       font-family: PlusJakartaSans, serif;
       font-weight: 600;
    }
+}
+
+.card {
+
+   // .card__price
+
+   &__price {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly
+   }
+}
+
+.price {
+
+   // .price__product
+
+   &__product {}
+}
+
+.btn {
+
+   // .btn__buy
+
+   &__buy {}
 }
 
 

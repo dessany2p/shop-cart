@@ -1,8 +1,4 @@
 @charset "UTF-8";
-@font-face {
-  font-family: PlusJakartaSans;
-  src: url(./fonts/PlusJakartaSans-Regular.ttf);
-}
 /* Обнуление */
 *,
 *::before,
@@ -157,8 +153,8 @@ h6 {
   height: 260px;
 }
 .card__image {
-  height: 100%;
-  width: 100%;
+  max-height: auto;
+  max-width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -169,6 +165,12 @@ h6 {
   font-size: 22px;
   font-family: PlusJakartaSans, serif;
   font-weight: 600;
+}
+
+.card__price {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .wrapper {
@@ -305,8 +307,19 @@ h6 {
   position: relative;
 }
 
+.price__product {
+  padding: 0 0 15px;
+}
+
+.btn__buy {
+  margin: 0 0 15px;
+}
+
 .categories__image {
   margin: 0 30px;
+  padding: 10px;
+  height: auto;
+  max-width: 100px;
 }
 @media (max-width: 760px) {
   .categories__image {

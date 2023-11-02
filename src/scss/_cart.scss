@@ -117,8 +117,18 @@
    position: relative;
 }
 
+.price__product {
+   padding:  0 0 15px
+}
+.btn__buy {
+   margin: 0 0 15px;
+}
 .categories__image {
    margin: 0 30px;
+   padding: 10px;
+   height: auto;
+   max-width: 100px;
+
    @media (max-width: 760px) {
       margin: 0 5px;
    }
