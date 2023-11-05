@@ -170,7 +170,27 @@ h6 {
 .card__price {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
+}
+
+.input_right > input[type=text] {
+  background-color: #EAEFF2;
+  width: 20px;
+}
+
+.counter-shop {
+  display: inline-flex;
+  align-items: center;
+  -moz-column-gap: 7px;
+       column-gap: 7px;
+  position: relative;
+}
+
+.input_right {
+  flex: 0 0 30px;
+  text-align: center;
+  margin: -15% 0;
+  width: 20px;
 }
 
 .wrapper {

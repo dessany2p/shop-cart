@@ -223,7 +223,7 @@ h6 {
    &__price {
       display: flex;
       align-items: center;
-      justify-content: space-evenly
+      justify-content: space-around
    }
 }
 
@@ -240,5 +240,26 @@ h6 {
 
    &__buy {}
 }
+
+// .input_right>input[type=text] {
+//    background-color: #EAEFF2;
+//    width: 20px;
+   
+// }
+
+
+// .counter-shop {
+//    display: inline-flex;
+//    align-items: center;
+//    column-gap: 7px;
+//    position: relative;
+// }
+
+// .input_right {
+//    flex: 0 0 30px;
+//    text-align: center;
+//    margin: -15% 0;
+//    width: 20px;
+// }
 
 
