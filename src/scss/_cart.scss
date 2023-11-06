@@ -117,7 +117,14 @@
    position: relative;
 }
 
-
+.sum {
+   display: flex;
+   float: right;
+   margin: 30px;
+   font-family: PlusJakartaSans, serif;
+   font-weight: normal;
+   font-size: 24px;
+}
 
 .price__product {
    padding:  0 0 15px

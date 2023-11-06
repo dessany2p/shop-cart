@@ -173,26 +173,6 @@ h6 {
   justify-content: space-around;
 }
 
-.input_right > input[type=text] {
-  background-color: #EAEFF2;
-  width: 20px;
-}
-
-.counter-shop {
-  display: inline-flex;
-  align-items: center;
-  -moz-column-gap: 7px;
-       column-gap: 7px;
-  position: relative;
-}
-
-.input_right {
-  flex: 0 0 30px;
-  text-align: center;
-  margin: -15% 0;
-  width: 20px;
-}
-
 .wrapper {
   min-height: 300px;
   max-width: 1440px;
@@ -325,6 +305,15 @@ h6 {
 .categories__item {
   display: flex;
   position: relative;
+}
+
+.sum {
+  display: flex;
+  float: right;
+  margin: 30px;
+  font-family: PlusJakartaSans, serif;
+  font-weight: normal;
+  font-size: 24px;
 }
 
 .price__product {
