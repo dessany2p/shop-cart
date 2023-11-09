@@ -4,8 +4,7 @@
 const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 
 const newCard = document.querySelector('.add__cards')
-
-
+let b = JSON.parse(localStorage.getItem('cart'));
 
 function createCart() {
    if (cartStorage.length) {
@@ -37,40 +36,16 @@ function createCart() {
 }
 createCart();
 
-// function sumCarts() {
-//    let sum = 0;
-//    const div = document.querySelector(".sum");
-//    const totalPrice = document.querySelectorAll('.price__item')
-//    let value = Number(document.querySelector('input').value);
-//    console.log(value);
-//    console.log(sum)
-//    // console.log(totalPrice)
 
-//    for (let item of totalPrice) {
-//       // console.log(item)
-//       let a = item.outerText.slice(0, length - 5)
-
-//       // console.log(a)
-//       sum += parseFloat(a) * value
-//    }
-//    return div.innerHTML = `Итого: ${parseFloat(sum)} руб.`
-// }
-// sumCarts()
-
-function totalCount() {
+function totalCount(price) {
    let sum = 0;
    const div = document.querySelector(".sum");
-   const totalPrice = document.querySelectorAll('.price__item')
-
-   for (let item of totalPrice) {
-      let value = Number(document.querySelector('input').value);
-      let a = Number(item.outerText.slice(0, length - 5));
-      // console.log(item, a)
-      sum += a * value
-   }
-   return div.innerHTML = `Итого: ${parseFloat(sum)} руб.`
+   [...document.querySelectorAll('.categories__item')].forEach((basketItem) => {
+      sum += Number(basketItem.children[3].outerText.slice(0, length - 5));
+   })
+   div.textContent = `${sum} RUB`
 }
-totalCount()
+// totalCount()
 
 
 // countClicks()
@@ -79,48 +54,62 @@ function countClicks() {
    if (counters) {
       counters.forEach(counter => {
          counter.addEventListener('click', e => {
-
             const target = e.target;
-
+            let value = parseInt(target.closest('.counter').querySelector('input').value);
+            let c;
             if (target.closest('.counter__button')) {
+               for (let item of b) {
+                  let trueItemId = (item.currentId === target.parentNode.parentNode.parentNode.dataset.id);
+                  let costPrice = target.parentNode.parentNode.parentNode.children[3].children[0];
+                  let inputValue = target.closest('.counter').querySelector('input').value;
+                  if (target.classList.contains('button__plus')) {
 
-               let value = parseInt(target.closest('.counter').querySelector('input').value);
-               if (target.classList.contains('button__plus')) {
-                  for (let item of b) {
-                     if (item.currentId === target.parentNode.parentNode.parentNode.dataset.id) {
-                        item.cartCount += 1;
-                        localStorage.setItem('cart', JSON.stringify([...b]))
+                     if (trueItemId) {
+                        if (item.cartCount <= 0) {
+                           target.closest('.counter').querySelector('.button__minus').classList.remove('disabled');
+                           item.cartCount += 1;
+                           localStorage.setItem('cart', JSON.stringify([...b]))
+                           c = Number(item.cartPrice.slice(0, length - 5)) * item.cartCount;
+                           costPrice.innerHTML = `${c} руб.`;
+                           value++;
+                           target.closest('.counter').querySelector('input').value = value;
+                           totalCount(c)
+                        } else {
+                           item.cartCount += 1;
+                           localStorage.setItem('cart', JSON.stringify([...b]))
+                           c = Number(item.cartPrice.slice(0, length - 5)) * item.cartCount;
+                           costPrice.innerHTML = `${c} руб.`;
+                           value++;
+                           target.closest('.counter').querySelector('input').value = value;
+                           totalCount(c)
+                           console.log(value, 'value', inputValue, 'inputValue')
+                        }
                      }
                   }
-                  value++;
-               } else {
-                  for (let item of b) {
-                     if (item.currentId === target.parentNode.parentNode.parentNode.dataset.id) {
-                        item.cartCount -= 1;
-                        localStorage.setItem('cart', JSON.stringify([...b]))
+                  if (target.classList.contains('button__minus')) {
+                     if (trueItemId) {
+                        if (item.cartCount <= 0) {
+                           target.closest('.counter').querySelector('.button__minus').classList.add('disabled');
+                           value = 0;
+                           cartCount = 0;
+                           c = Number(item.cartPrice.slice(0, length - 5)) * item.cartCount;
+                           localStorage.setItem('cart', JSON.stringify([...b]))
+                        } else {
+                           item.cartCount -= 1;
+                           localStorage.setItem('cart', JSON.stringify([...b]))
+                           c = Number(item.cartPrice.slice(0, length - 5)) * item.cartCount;
+                           costPrice.innerHTML = `${c} руб.`;
+                           value--;
+                           target.closest('.counter').querySelector('input').value = value;
+                           totalCount(c)
+                        }
                      }
                   }
-                  value--;
                }
-
-               if (value <= 0) {
-                  for (let item of b) {
-                     if (item.currentId === target.parentNode.parentNode.parentNode.dataset.id) {
-                        item.cartCount = 0;
-                        localStorage.setItem('cart', JSON.stringify([...b]))
-                     }
-
-                  }
-                  value = 0;
-                  target.closest('.counter').querySelector('.button__minus').classList.add('disabled')
-               } else {
-                  target.closest('.counter').querySelector('.button__minus').classList.remove('disabled')
-               }
-               target.closest('.counter').querySelector('input').value = value;
             }
          })
       })
-   } totalCount()
+   }
 }
 
 countClicks()
@@ -140,7 +129,7 @@ function checkClose() {
                elem.parentNode.remove()
             }
          }
-         sumCarts()
+         totalCount()
          localStorage.setItem('cart', JSON.stringify([...b]));
       })
    })
