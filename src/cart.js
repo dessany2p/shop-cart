@@ -82,7 +82,6 @@ function countClicks() {
                            value++;
                            target.closest('.counter').querySelector('input').value = value;
                            totalCount(c)
-                           console.log(value, 'value', inputValue, 'inputValue')
                         }
                      }
                   }
@@ -115,23 +114,105 @@ function countClicks() {
 countClicks()
 
 // checkClose()
-const elems = document.querySelectorAll('.categories__close');
+let elems = document.querySelectorAll('.categories__close');
 function checkClose() {
+   // elems = document.querySelectorAll('.categories__close');
    elems.forEach((elem, index) => {
       elem.addEventListener('click', (e) => {
-         let currentElem = elems[index].parentNode.dataset.id
-         for (let item of b) {
-            if (item.currentId === currentElem) {
-               // console.log(item.currentId)
-               // console.log(currentElem)
-               b.splice(index, 1)
-               // console.log(elem.parentNode)
-               elem.parentNode.remove()
+         let currentBtn = elem.parentElement.dataset.id;
+         let currentElem = elems[index].parentElement.dataset.id;
+         console.log('currentBtn :', currentBtn)
+         console.log('currentElem :', currentElem)
+         console.log('ssss', elem.parentElement.dataset.id)
+
+         // for (let elem of elems) {
+         // console.log('elem new', elem.parentNode.dataset.id)
+         // elem.parentNode.dataset.id
+         // console.log(b[index].currentId)
+         // if (b[index] !== undefined) {
+
+         // }
+         // console.log('pashol nahooq ne ravno индкс ебаный', elems[index].parentNode.dataset.id)
+         if (currentBtn === currentElem) {
+            console.log(elem.parentElement)
+            for (let item of b) {
+               if (item.currentId === currentBtn) {
+                  console.log(elems.length === localStorage.length)
+                  console.log('zashlo item', item)
+
+                  b = JSON.parse(localStorage.getItem('cart') || '[]');
+                  b.splice(index, 1)
+                  localStorage.setItem('cart', JSON.stringify([...b]));
+
+                  console.log(b);
+
+                  elem.parentElement.remove()
+                  console.log('elems do', elems)
+                  // elems = document.querySelectorAll('.categories__close');
+                  console.log('elems posle', elems)
+               }
             }
          }
+
+
+
+         // for (let item of b) {
+         //    if (item.currentId === currentElem) {
+         //       elem.parentNode.remove()
+         //       // console.log(item.currentId)
+         //       // console.log(currentElem)
+         //       console.log('b index', b[index])
+         //       b.splice(index, 1)
+         //       localStorage.setItem('cart', JSON.stringify([...b]));
+         //       console.log('local', localStorage.getItem('cart'))
+         //       console.log('b остаток', b)
+         //       console.log('elem parentnode', elem.parentNode)
+
+         //       console.log('elems after', elems)
+         //       elems = document.querySelectorAll('.categories__close');
+         //       console.log('elems before', elems)
+         //    }
+         // }
          totalCount()
-         localStorage.setItem('cart', JSON.stringify([...b]));
       })
+
    })
 }
 checkClose();
+
+const requestURL = 'https://jsonplaceholder.typicode.com/users';
+
+function sendRequest(method, url, body = null) {
+   const headers = {
+      'Content-Type': 'application/json'
+   }
+   return fetch(url, {
+      method: method,
+      body: JSON.stringify(body),
+      headers: headers
+   }).then(Response => {
+      return Response.json()
+   })
+}
+
+// sendRequest('GET', requestURL)
+//    .then(data => console.log(data))
+//    .catch(err => console.log(err))
+
+let body = {}
+
+sendRequest('POST', requestURL, body)
+   .then(data => console.log(data))
+   .catch(err => console.log(err));
+
+const btnSend = document.querySelector('.btn-buy');
+console.log(btnSend)
+
+btnSend.addEventListener('click', (e) => {
+   console.log(e)
+   if (e) {
+      body = b;
+      console.log(body)
+      return sendRequest('POST', requestURL, body)
+   }
+})
