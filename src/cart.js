@@ -1,6 +1,3 @@
-// window.localStorage.clear()
-// import countClicks from './script.js';
-
 const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 
 const newCard = document.querySelector('.add__cards')
@@ -36,13 +33,14 @@ function createCart() {
 }
 createCart();
 
-
+let result;
 function totalCount(price) {
    let sum = 0;
    const div = document.querySelector(".sum");
    [...document.querySelectorAll('.categories__item')].forEach((basketItem) => {
       sum += Number(basketItem.children[3].outerText.slice(0, length - 5));
    })
+   result = sum;
    div.textContent = `${sum} RUB`
 }
 // totalCount()
@@ -116,63 +114,20 @@ countClicks()
 // checkClose()
 let elems = document.querySelectorAll('.categories__close');
 function checkClose() {
-   // elems = document.querySelectorAll('.categories__close');
    elems.forEach((elem, index) => {
       elem.addEventListener('click', (e) => {
          let currentBtn = elem.parentElement.dataset.id;
          let currentElem = elems[index].parentElement.dataset.id;
-         console.log('currentBtn :', currentBtn)
-         console.log('currentElem :', currentElem)
-         console.log('ssss', elem.parentElement.dataset.id)
-
-         // for (let elem of elems) {
-         // console.log('elem new', elem.parentNode.dataset.id)
-         // elem.parentNode.dataset.id
-         // console.log(b[index].currentId)
-         // if (b[index] !== undefined) {
-
-         // }
-         // console.log('pashol nahooq ne ravno индкс ебаный', elems[index].parentNode.dataset.id)
          if (currentBtn === currentElem) {
-            console.log(elem.parentElement)
             for (let item of b) {
                if (item.currentId === currentBtn) {
-                  console.log(elems.length === localStorage.length)
-                  console.log('zashlo item', item)
-
                   b = JSON.parse(localStorage.getItem('cart') || '[]');
                   b.splice(index, 1)
                   localStorage.setItem('cart', JSON.stringify([...b]));
-
-                  console.log(b);
-
                   elem.parentElement.remove()
-                  console.log('elems do', elems)
-                  // elems = document.querySelectorAll('.categories__close');
-                  console.log('elems posle', elems)
                }
             }
          }
-
-
-
-         // for (let item of b) {
-         //    if (item.currentId === currentElem) {
-         //       elem.parentNode.remove()
-         //       // console.log(item.currentId)
-         //       // console.log(currentElem)
-         //       console.log('b index', b[index])
-         //       b.splice(index, 1)
-         //       localStorage.setItem('cart', JSON.stringify([...b]));
-         //       console.log('local', localStorage.getItem('cart'))
-         //       console.log('b остаток', b)
-         //       console.log('elem parentnode', elem.parentNode)
-
-         //       console.log('elems after', elems)
-         //       elems = document.querySelectorAll('.categories__close');
-         //       console.log('elems before', elems)
-         //    }
-         // }
          totalCount()
       })
 
@@ -206,13 +161,11 @@ sendRequest('POST', requestURL, body)
    .catch(err => console.log(err));
 
 const btnSend = document.querySelector('.btn-buy');
-console.log(btnSend)
 
 btnSend.addEventListener('click', (e) => {
    console.log(e)
    if (e) {
       body = b;
-      console.log(body)
       return sendRequest('POST', requestURL, body)
    }
 })

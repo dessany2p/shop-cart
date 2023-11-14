@@ -20,14 +20,12 @@ priceButtons.forEach((el, i) => {
       const cartStorage = localStorage.getItem('cart') || '[]'
       let cart = JSON.parse(cartStorage)
 
-      // console.log(b)
       let cartCount = 1;
       let currentId = el.parentNode.parentNode.dataset.id
       const card = { currentId, cartTitle, cartPrice, cartCount, cartImg }
 
 
       if (!el.classList.contains('added')) {
-         // console.log('bbbb', b)
          cart.forEach((item, i) => {
             if (item[i] !== el) {
                localStorage.setItem('cart', JSON.stringify([...cart, card]))
@@ -36,7 +34,6 @@ priceButtons.forEach((el, i) => {
 
          console.log(JSON.parse(localStorage.getItem('cart')))
          el.classList.add('added')
-         // console.log(el)
          el.innerHTML = 'Добавлено в корзину'
 
          localStorage.setItem('cart', JSON.stringify([...cart, card]))
