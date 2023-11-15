@@ -1,6 +1,9 @@
 // import './index.html';
 // import './cart.html';
 // import './style.scss';
+// import { changedItemLocalStorage } from './cart'
+
+// changedItemLocalStorage('product2', 23)
 
 const cardsId = document.querySelectorAll('[data-id]');
 const priceButtons = document.querySelectorAll('.btn__buy');
@@ -32,7 +35,7 @@ priceButtons.forEach((el, i) => {
             }
          })
 
-         console.log(JSON.parse(localStorage.getItem('cart')))
+         // console.log(JSON.parse(localStorage.getItem('cart')))
          el.classList.add('added')
          el.innerHTML = 'Добавлено в корзину'
 
