@@ -177,6 +177,8 @@ h6 {
       margin: 0 auto;
 }
 
+
+
 .card {
 
    // .card__item
@@ -238,7 +240,18 @@ h6 {
 
    // .btn__buy
 
-   &__buy {}
+   &__buy {
+      margin: 5px;
+      padding: 3px 5px;
+      height: 30px
+   }
+}
+
+.added {
+   background-color: greenyellow;
+   border: 1px solid grey;
+   border-radius: 3px;
+   margin: 5px;
 }
 
 // .input_right>input[type=text] {

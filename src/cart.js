@@ -3,17 +3,18 @@ const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 const newCard = document.querySelector('.add__cards')
 let b = JSON.parse(localStorage.getItem('cart'));
 
-function totalCount(price) {
+function totalCount() {
    let sum = 0;
    const totalAll = document.querySelector(".sum");
 
    const valueCartsCount = getCartsContents()
    for (let item of valueCartsCount) {
-      sum += (item.cartCount * Number(item.cartPrice.slice(0, length - 5)))
+      // console.log(typeof item.cartCount)
+      sum += (Number(item.cartPrice.slice(0, length - 5)) * item.cartCount)
    }
    totalAll.textContent = `${sum} RUB`
 }
-totalCount()
+// totalCount()
 
 
 // Ф-ия для подсчёта общей стоимости каждого итема. Не уверен что нужна. Пока отключил.
@@ -27,7 +28,6 @@ totalCount()
 
 function countClicks() {
    let counters = document.querySelectorAll('[data-counter]');
-   console.log(counters)
    counters.forEach(counter => {
       counter.addEventListener('click', e => {
          const target = e.target;
@@ -104,9 +104,7 @@ const changedItemLocalStorage = (id, value = 1) => {
    let necessaryItems = [];
    // логика
    for (let item of getIdItem) {
-      console.log(!necessaryItems.includes(item))
       if (item['currentId'] === id && !necessaryItems.includes(item)) {
-         console.log('item : ', item, 'value :', value)
          item.cartCount = value;
          necessaryItems.push(item);
       } else if (item['currentId'] !== id) {
@@ -115,51 +113,62 @@ const changedItemLocalStorage = (id, value = 1) => {
       localStorage.setItem('cart', JSON.stringify([...necessaryItems]))
    }
 }
-// export { changedItemLocalStorage };
 // changedItemLocalStorage('product2')
 
 
 // 2__. Получение значения item'а из localStorage. Ф-ция должна принимать его id'шник и возвращать весь item
 function getItemLocalStorage(id) {
    // Получаем содержимое хранилища в переменную или пустой массив, если хранилище пустое (чтобы не получить андефн)
-   let getIdItem = JSON.parse(localStorage.getItem('cart') || [])
+   let getIdItem = getCartsContents();
+   // console.log(getIdItem)
    let necessaryItems = [];
    // логика:
    // Проходимся по элементам массива в цикле и находим заданный ID.
    for (let item of getIdItem) {
+      // console.log(item['currentId'])
+      // console.log(id)
       if (item['currentId'] === id) {
          // возвращаем нужным ID из хранилища в массив.
+         // return item
          necessaryItems.push(item)
       }
       // проверка что приходит в neccesaryItems;
-      // console.log(necessaryItems)
-      return necessaryItems;
+      console.log(necessaryItems)
+      // return necessaryItems;
    }
 }
 // __2. tests getItemLocalStorage(id)
 // getItemLocalStorage('product2')
+// addItemInLocalStorage(getItemLocalStorage('product2'))
 
 // 3__. Получение всей корзины из localStorage(распаршенной с помощью JSON.parse), ф - ция ничего не принимает, возвращает массив item'ов
 function getCartsContents() {
-   return JSON.parse(localStorage.getItem('cart') || [])
+   return JSON.parse(localStorage.getItem('cart') || '[]');
 }
 // __3. tests getCartsContents()
-// console.log('getCartsContents() :', getCartsContents())
 
 // 4. Добавление item'а в localStorage. Функция принимает весь item, возвращает его id'шник
 function addItemInLocalStorage(item) {
    // логика
    // просто добавляем элемент в хранилище.
-   localStorage.setItem('cart', JSON.stringify([item]))
+   let neccesaryItems = getCartsContents();
+   console.log(neccesaryItems)
+   if (neccesaryItems.includes(item)) {
+      item.cartCount++;
+      neccesaryItems.push(item)
+   } else {
+      neccesaryItemsItems.push(item)
+   }
+   localStorage.setItem('cart', JSON.stringify([...neccesaryItems]))
    // Возвращаем ID.
-   return item['currentId']
+   return console.log(item['currentId'])
 }
 
 
 // 5. Удаление item'а из localStorage. Ф-ция принимает его id'шник, ничего не возвращает.
 
 function deleteItemInLocalStorage(id) {
-   let basket = JSON.parse(localStorage.getItem('cart') || []);
+   let basket = getCartsContents();
    let necessaryItems = [];
    for (let item of basket) {
       if (item['currentId'] !== id) {
@@ -173,12 +182,7 @@ function deleteItemInLocalStorage(id) {
 
 
 // 6. Рендер item'а в корзине. Ф-ция принимает весь item и рендерит его в корзине. Если item уже "нарисован" в корзине, сначала удаляет его и потом заново его "рисует".
-
-function createItemInBasket(item) {
-   const localStorageArr = getCartsContents();
-   const containerCard = document.querySelector('.add__cards');
-   const collectionCarts = document.querySelectorAll('.categories__item');
-
+function getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectionCarts) {
    localStorageArr.forEach((element, index) => {
       let { currentId, cartTitle, cartPrice, cartCount, cartImg } = element
 
@@ -218,18 +222,32 @@ function createItemInBasket(item) {
       }
    })
 }
+
+function createItemInBasket(item) {
+   const localStorageArr = getCartsContents();
+   const containerCard = document.querySelector('.add__cards');
+   const collectionCarts = document.querySelectorAll('.categories__item');
+   // TODO: выделить в отдельную функцию
+   getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectionCarts)
+   // TODO: выделить в отдельную функцию (концовка)
+}
 createItemInBasket()
 // Запускаем счетчики после рендера корзинки
 // Не настроен фикс дублей.
+
 countClicks()
 totalCount()
 
 
-
+function deleteNodeAndItem(item, elem) {
+   deleteItemInLocalStorage(item.currentId)
+   elem.parentElement.remove()
+}
 
 // checkClose()
-let elems = document.querySelectorAll('.categories__close');
+
 function checkClose() {
+   let elems = document.querySelectorAll('.categories__close');
    elems.forEach((elem, index) => {
       elem.addEventListener('click', (e) => {
          let currentBtn = elem.parentElement.dataset.id;
@@ -237,8 +255,11 @@ function checkClose() {
          if (currentBtn === currentElem) {
             for (let item of b) {
                if (item.currentId === currentBtn) {
-                  deleteItemInLocalStorage(item.currentId)
-                  elem.parentElement.remove()
+                  deleteNodeAndItem(item, elem)
+                  // TODO: выделить в отдельную фу-цию
+                  // deleteItemInLocalStorage(item.currentId)
+                  // elem.parentElement.remove()
+                  // TODO: конец
                }
             }
          }

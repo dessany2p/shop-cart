@@ -173,6 +173,19 @@ h6 {
   justify-content: space-around;
 }
 
+.btn__buy {
+  margin: 5px;
+  padding: 3px 5px;
+  height: 30px;
+}
+
+.added {
+  background-color: greenyellow;
+  border: 1px solid grey;
+  border-radius: 3px;
+  margin: 5px;
+}
+
 .wrapper {
   min-height: 300px;
   max-width: 1440px;
@@ -499,4 +512,17 @@ h6 {
 .btnBuy__conteyner {
   display: flex;
   justify-content: flex-end;
+  max-width: 1110px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+}
+
+.btn-buy {
+  margin: 5px;
+  padding: 3px 5px;
+  height: 30px;
+  background-color: greenyellow;
+  border: 1px solid grey;
+  border-radius: 3px;
 }
