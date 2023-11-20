@@ -6,24 +6,13 @@ let b = JSON.parse(localStorage.getItem('cart'));
 function totalCount() {
    let sum = 0;
    const totalAll = document.querySelector(".sum");
-
    const valueCartsCount = getCartsContents()
+
    for (let item of valueCartsCount) {
-      // console.log(typeof item.cartCount)
       sum += (Number(item.cartPrice.slice(0, length - 5)) * item.cartCount)
    }
    totalAll.textContent = `${sum} RUB`
 }
-// totalCount()
-
-
-// Ф-ия для подсчёта общей стоимости каждого итема. Не уверен что нужна. Пока отключил.
-// function totalOne(item) {
-//    const totalOne = document.querySelectorAll('.price__item')
-//    let sum = (item.cartCount * Number(item.cartPrice.slice(0, length - 5)))
-//    totalOne.textContent = `${sum} rub`
-// }
-// countClicks()
 
 
 function countClicks() {
@@ -53,7 +42,6 @@ function countClicks() {
 
                         changedItemLocalStorage(currId, item.cartCount)
                         totalCount(c)
-                        // totalOne(item)
                      }
                      else {
                         value++;
@@ -65,13 +53,11 @@ function countClicks() {
 
                         changedItemLocalStorage(currId, item.cartCount)
                         totalCount(c)
-                        // totalOne(item)
                      }
                   }
                }
                if (target.classList.contains('button__minus')) {
                   if (trueItemId) {
-                     console.log(item.cartCount)
                      if (item.cartCount <= 0) {
                         target.closest('.counter').querySelector('.button__minus').classList.add('disabled');
                         value = 0;
@@ -102,6 +88,7 @@ function countClicks() {
 const changedItemLocalStorage = (id, value = 1) => {
    let getIdItem = JSON.parse(localStorage.getItem('cart') || []);
    let necessaryItems = [];
+
    // логика
    for (let item of getIdItem) {
       if (item['currentId'] === id && !necessaryItems.includes(item)) {
@@ -120,20 +107,16 @@ const changedItemLocalStorage = (id, value = 1) => {
 function getItemLocalStorage(id) {
    // Получаем содержимое хранилища в переменную или пустой массив, если хранилище пустое (чтобы не получить андефн)
    let getIdItem = getCartsContents();
-   // console.log(getIdItem)
    let necessaryItems = [];
    // логика:
    // Проходимся по элементам массива в цикле и находим заданный ID.
    for (let item of getIdItem) {
-      // console.log(item['currentId'])
-      // console.log(id)
       if (item['currentId'] === id) {
          // возвращаем нужным ID из хранилища в массив.
          // return item
          necessaryItems.push(item)
       }
       // проверка что приходит в neccesaryItems;
-      console.log(necessaryItems)
       // return necessaryItems;
    }
 }
@@ -152,7 +135,6 @@ function addItemInLocalStorage(item) {
    // логика
    // просто добавляем элемент в хранилище.
    let neccesaryItems = getCartsContents();
-   console.log(neccesaryItems)
    if (neccesaryItems.includes(item)) {
       item.cartCount++;
       neccesaryItems.push(item)
@@ -175,11 +157,12 @@ function deleteItemInLocalStorage(id) {
          necessaryItems.push(item);
       }
       localStorage.setItem('cart', JSON.stringify([...necessaryItems]))
+      showBtnBuy()
    }
 }
 // __5 tests 
 // deleteItemInLocalStorage('product1')
-
+window.deleteItemInLocalStorage = deleteItemInLocalStorage
 
 // 6. Рендер item'а в корзине. Ф-ция принимает весь item и рендерит его в корзине. Если item уже "нарисован" в корзине, сначала удаляет его и потом заново его "рисует".
 function getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectionCarts) {
@@ -227,24 +210,21 @@ function createItemInBasket(item) {
    const localStorageArr = getCartsContents();
    const containerCard = document.querySelector('.add__cards');
    const collectionCarts = document.querySelectorAll('.categories__item');
-   // TODO: выделить в отдельную функцию
    getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectionCarts)
-   // TODO: выделить в отдельную функцию (концовка)
+   showBtnBuy()
 }
 createItemInBasket()
 // Запускаем счетчики после рендера корзинки
-// Не настроен фикс дублей.
 
 countClicks()
 totalCount()
+showBtnBuy()
 
 
 function deleteNodeAndItem(item, elem) {
    deleteItemInLocalStorage(item.currentId)
    elem.parentElement.remove()
 }
-
-// checkClose()
 
 function checkClose() {
    let elems = document.querySelectorAll('.categories__close');
@@ -256,10 +236,6 @@ function checkClose() {
             for (let item of b) {
                if (item.currentId === currentBtn) {
                   deleteNodeAndItem(item, elem)
-                  // TODO: выделить в отдельную фу-цию
-                  // deleteItemInLocalStorage(item.currentId)
-                  // elem.parentElement.remove()
-                  // TODO: конец
                }
             }
          }
@@ -279,28 +255,97 @@ function sendRequest(method, url, body = null) {
       method: method,
       body: JSON.stringify(body),
       headers: headers
-   }).then(Response => {
-      return Response.json()
    })
+      .then(response => {
+         if (response.ok) {
+            return response.json();
+         }
+         throw new Error('Что-то пошло не так... Повторите попытку позднее.');
+      })
 }
-
-// sendRequest('GET', requestURL)
-//    .then(data => console.log(data))
-//    .catch(err => console.log(err))
 
 let body = {}
 
-// расскоментировать
-// sendRequest('POST', requestURL, body)
-//    .then(data => console.log(data))
-//    .catch(err => console.log(err));
-
-const btnSend = document.querySelector('.btn-buy');
+const btnSend = document.getElementById('addBtn');
 
 btnSend.addEventListener('click', (e) => {
-   console.log(e)
    if (e) {
       body = b;
       return sendRequest('POST', requestURL, body)
+
+         .then(date => {
+            showPhrase('Ваш заказ успешно оформлен!'),
+               clearKeyCartInLocalStorage(),
+               hideModal(),
+               removeBtnBuy()
+         })
+
+         .catch(err => {
+            showPhrase('Что-то пошло не так... Повторите попытку позднее.'),
+               removeBtnBuy()
+         })
    }
 })
+
+function showPhrase(phrase) {
+   document.body.querySelector('.successful__order').innerHTML = phrase;
+}
+
+function hideModal() {
+   modal.style.display = 'none';
+}
+
+function removeBtnBuy() {
+   document.getElementById('myBtn').remove()
+}
+
+function clearKeyCartInLocalStorage() {
+   localStorage.setItem('cart', '[]')
+}
+
+function checkBasket() {
+   return JSON.parse(localStorage.getItem('cart' || '[]'));
+}
+
+function showBtnBuy() {
+   let a = checkBasket()
+   if (a.length !== 0) {
+      document.querySelector('.btn-buy').innerHTML = 'Купить'
+   } else {
+      document.querySelector('.btn-buy').innerHTML = 'Корзина пуста, выбери товары на странице Shop'
+   }
+}
+
+
+// логистик модалки
+let modal = document.getElementById('myModal');
+let btn = document.getElementById('myBtn');
+let span = document.getElementsByClassName('close')[0];
+let deleteBtn = document.getElementById('deleteBtn');
+
+function openModal() {
+   let a = checkBasket()
+   if (a.length !== 0) {
+      modal.style.display = 'block'
+   }
+}
+
+btn.addEventListener('click', (e) => {
+   if (e) {
+      openModal()
+   }
+})
+
+deleteBtn.onclick = function () {
+   modal.style.display = 'none'
+}
+
+span.onclick = function () {
+   modal.style.display = 'none'
+}
+
+window.onclick = function (e) {
+   if (e.target === modal) {
+      modal.style.display = 'none'
+   }
+}

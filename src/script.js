@@ -4,11 +4,8 @@
 // import { changedItemLocalStorage } from './cart'
 
 const cardsId = document.querySelectorAll('[data-id]');
-console.log('cardsId :', cardsId)
 const priceButtons = document.querySelectorAll('.btn__buy');
-console.log('pricebuttons :', priceButtons)
 const cartItem = document.querySelectorAll('.card__item');
-console.log('cartItem :', cartItem)
 let btnCountTest = 0;
 
 function checkPriceButtons() {
@@ -32,7 +29,6 @@ function addItemInLocalStorage(item) {
    }
 
    localStorage.setItem('cart', JSON.stringify([...neccesaryItems]))
-   console.log('addItemInLocalStorage(item) working and return :', item['currentId'])
    // Возвращаем ID.
    return item['currentId']
 }
@@ -54,14 +50,11 @@ priceButtons.forEach((el, i) => {
       const cartPrice = el.parentElement.parentElement.childNodes[5].childNodes[1].innerText
       const cartImg = el.parentElement.parentElement.querySelector('img').getAttribute('src')
 
-      console.log('cliuck')
-
       let cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 
       let cartCount = 1;
       let currentId = el.parentNode.parentNode.dataset.id
       const card = { currentId, cartTitle, cartPrice, cartCount, cartImg }
-      console.log(card)
       if (!el.classList.contains('added')) {
          addItemInLocalStorage(card)
          addTextOnBtn(el)
