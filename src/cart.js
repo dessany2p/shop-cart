@@ -1,3 +1,5 @@
+/// пупа и лупа
+
 const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 
 const newCard = document.querySelector('.add__cards')
