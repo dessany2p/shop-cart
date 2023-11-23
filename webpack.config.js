@@ -18,7 +18,7 @@ module.exports = {
    },
    entry: {
       index: path.resolve(__dirname, 'src', 'index.js'),
-      // cart: path.resolve(__dirname, 'src', 'cart.js'),
+      cart: path.resolve(__dirname, 'src', 'cart.js'),
    },
    output: {
       path: path.resolve(__dirname, 'dist'),
@@ -30,12 +30,15 @@ module.exports = {
    plugins: [
       new HtmlWebpackPlugin({
          filename: 'index.html',
-         template: path.resolve(__dirname, 'src', 'index.html')
+         chunks: ['index'],
+         template: path.resolve(__dirname, 'src', 'index.html'),
       }),
-      // new HtmlWebpackPlugin({
-      //    filename: 'cart.html',
-      //    template: path.resolve(__dirname, 'src', 'cart.html')
-      // }),
+      new HtmlWebpackPlugin({
+         filename: 'cart.html',
+         chunks: ['cart'],
+         template: path.resolve(__dirname, 'src', 'cart.html'),
+         // scriptLoading: 'blocking'
+      }),
       new MiniCssExtractPlugin({
          filename: '[name].[contenthash].css'
       })

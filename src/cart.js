@@ -1,4 +1,5 @@
 /// пупа и лупа
+import './style.scss';
 
 const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
 
@@ -310,8 +311,11 @@ function checkBasket() {
 }
 
 function showBtnBuy() {
+   console.log('showBtn test....')
    let a = checkBasket()
+   console.log('showBtn a.length: test....', a.length)
    if (a.length !== 0) {
+
       document.querySelector('.btn-buy').innerHTML = 'Купить'
    } else {
       document.querySelector('.btn-buy').innerHTML = 'Корзина пуста, выбери товары на странице Shop'
