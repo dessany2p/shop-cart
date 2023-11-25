@@ -1,11 +1,19 @@
-/// пупа и лупа
+// cart.html = Корзина
+
+// Импорт стилей и вспомогательных функций.
+
 import './style.scss';
 
-const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
+import { modal, btn, span, deleteBtn, openModal, hideModal, removeBtnBuy, clearKeyCartInLocalStorage, checkBasket, showBtnBuy } from './helpersJS/Модальное окошко';
+import { deleteNodeAndItem, requestURL, sendRequest, btnSend, showPhrase } from './helpersJS/helperCart';
 
-const newCard = document.querySelector('.add__cards')
-let b = JSON.parse(localStorage.getItem('cart'));
+export let b = JSON.parse(localStorage.getItem('cart'));
 
+// const cartStorage = JSON.parse(localStorage.getItem('cart') || '[]')
+// const newCard = document.querySelector('.add__cards')
+
+
+// Подсчет стоимости всех товаров.
 function totalCount() {
    let sum = 0;
    const totalAll = document.querySelector(".sum");
@@ -14,8 +22,9 @@ function totalCount() {
    for (let item of valueCartsCount) {
       sum += (Number(item.cartPrice.slice(0, length - 5)) * item.cartCount)
    }
-   totalAll.textContent = `${sum} RUB`
+   totalAll.textContent = `${sum} руб.`
 }
+// totalCount()
 
 
 function countClicks() {
@@ -106,7 +115,8 @@ const changedItemLocalStorage = (id, value = 1) => {
 // changedItemLocalStorage('product2')
 
 
-// 2__. Получение значения item'а из localStorage. Ф-ция должна принимать его id'шник и возвращать весь item
+//2__. Получение значения item'а из localStorage. Ф-ция должна принимать его id'шник и возвращать весь item
+
 function getItemLocalStorage(id) {
    // Получаем содержимое хранилища в переменную или пустой массив, если хранилище пустое (чтобы не получить андефн)
    let getIdItem = getCartsContents();
@@ -151,7 +161,6 @@ function addItemInLocalStorage(item) {
 
 
 // 5. Удаление item'а из localStorage. Ф-ция принимает его id'шник, ничего не возвращает.
-
 function deleteItemInLocalStorage(id) {
    let basket = getCartsContents();
    let necessaryItems = [];
@@ -174,6 +183,8 @@ function getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectio
 
       function createDivItem(item) {
          const div = document.createElement('categories__item')
+         let a = cartPrice.slice(0, length - 5) * cartCount;
+
          div.innerHTML = `
                <div class="categories__item" data-id='${currentId}'>
                   <img src=${cartImg} alt="" class="categories__image">
@@ -188,7 +199,7 @@ function getLocaleStorageAndCreateItem(localStorageArr, containerCard, collectio
                      </div>
                   </div>
                   <div class="categories__price">
-                     <span class="price__item">${cartPrice}</span>
+                     <span class="price__item">${a} руб.</span>
                   </div>
                   <span class="categories__close">X</span>
                `
@@ -224,11 +235,8 @@ totalCount()
 showBtnBuy()
 
 
-function deleteNodeAndItem(item, elem) {
-   deleteItemInLocalStorage(item.currentId)
-   elem.parentElement.remove()
-}
 
+// Ф-я удаляющая ноду по нажатию на крестик
 function checkClose() {
    let elems = document.querySelectorAll('.categories__close');
    elems.forEach((elem, index) => {
@@ -247,111 +255,3 @@ function checkClose() {
    })
 }
 checkClose();
-
-const requestURL = 'https://jsonplaceholder.typicode.com/users';
-
-function sendRequest(method, url, body = null) {
-   const headers = {
-      'Content-Type': 'application/json'
-   }
-   return fetch(url, {
-      method: method,
-      body: JSON.stringify(body),
-      headers: headers
-   })
-      .then(response => {
-         if (response.ok) {
-            return response.json();
-         }
-         throw new Error('Что-то пошло не так... Повторите попытку позднее.');
-      })
-}
-
-let body = {}
-
-const btnSend = document.getElementById('addBtn');
-
-btnSend.addEventListener('click', (e) => {
-   if (e) {
-      body = b;
-      return sendRequest('POST', requestURL, body)
-
-         .then(date => {
-            showPhrase('Ваш заказ успешно оформлен!'),
-               clearKeyCartInLocalStorage(),
-               hideModal(),
-               removeBtnBuy()
-         })
-
-         .catch(err => {
-            showPhrase('Что-то пошло не так... Повторите попытку позднее.'),
-               removeBtnBuy()
-         })
-   }
-})
-
-function showPhrase(phrase) {
-   document.body.querySelector('.successful__order').innerHTML = phrase;
-}
-
-function hideModal() {
-   modal.style.display = 'none';
-}
-
-function removeBtnBuy() {
-   document.getElementById('myBtn').remove()
-}
-
-function clearKeyCartInLocalStorage() {
-   localStorage.setItem('cart', '[]')
-}
-
-function checkBasket() {
-   return JSON.parse(localStorage.getItem('cart' || '[]'));
-}
-
-function showBtnBuy() {
-   console.log('showBtn test....')
-   let a = checkBasket()
-   console.log('showBtn a.length: test....', a.length)
-   if (a.length !== 0) {
-
-      document.querySelector('.btn-buy').innerHTML = 'Купить'
-   } else {
-      document.querySelector('.btn-buy').innerHTML = 'Корзина пуста, выбери товары на странице Shop'
-   }
-}
-
-
-// логистик модалки
-let modal = document.getElementById('myModal');
-let btn = document.getElementById('myBtn');
-let span = document.getElementsByClassName('close')[0];
-let deleteBtn = document.getElementById('deleteBtn');
-
-function openModal() {
-   let a = checkBasket()
-   if (a.length !== 0) {
-      modal.style.display = 'block'
-   }
-}
-
-btn.addEventListener('click', (e) => {
-   if (e) {
-      openModal()
-   }
-})
-
-deleteBtn.onclick = function () {
-   modal.style.display = 'none'
-}
-
-span.onclick = function () {
-   modal.style.display = 'none'
-}
-
-window.onclick = function (e) {
-   if (e.target === modal) {
-      modal.style.display = 'none'
-   }
-}

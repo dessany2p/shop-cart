@@ -1,10 +1,10 @@
-// zalypuch
-import './style.scss'
+// index.html = Главная страница
 
-const cardsId = document.querySelectorAll('[data-id]');
+// Импорт стилей и вспомогательных функций.
+import './style.scss'
+import { deleteItemInLocalStorage, addItemInLocalStorage, addTextOnBtn, delTextOnBtn } from './helpersJS/helperIndex'
+
 const priceButtons = document.querySelectorAll('.btn__buy');
-const cartItem = document.querySelectorAll('.card__item');
-let btnCountTest = 0;
 
 function checkPriceButtons() {
    priceButtons.forEach((el) => {
@@ -18,30 +18,6 @@ function checkPriceButtons() {
 }
 checkPriceButtons()
 
-function addItemInLocalStorage(item) {
-   // логика
-   // просто добавляем элемент в хранилище.
-   let neccesaryItems = JSON.parse(localStorage.getItem('cart') || '[]');
-   if (!neccesaryItems.includes(item)) {
-      neccesaryItems.push(item)
-   }
-
-   localStorage.setItem('cart', JSON.stringify([...neccesaryItems]))
-   // Возвращаем ID.
-   return item['currentId']
-}
-
-function deleteItemInLocalStorage(id) {
-   let basket = JSON.parse(localStorage.getItem('cart') || '[]');
-   let necessaryItems = [];
-   for (let item of basket) {
-      if (item['currentId'] !== id) {
-         necessaryItems.push(item);
-      }
-      localStorage.setItem('cart', JSON.stringify([...necessaryItems]))
-   }
-}
-
 priceButtons.forEach((el, i) => {
    el.addEventListener('click', (e) => {
       const cartTitle = el.parentElement.parentElement.childNodes[3].innerText
@@ -53,6 +29,7 @@ priceButtons.forEach((el, i) => {
       let cartCount = 1;
       let currentId = el.parentNode.parentNode.dataset.id
       const card = { currentId, cartTitle, cartPrice, cartCount, cartImg }
+
       if (!el.classList.contains('added')) {
          addItemInLocalStorage(card)
          addTextOnBtn(el)
@@ -62,13 +39,3 @@ priceButtons.forEach((el, i) => {
       }
    })
 })
-
-function addTextOnBtn(el) {
-   el.classList.add('added')
-   el.innerHTML = 'Добавлено в корзину'
-}
-
-function delTextOnBtn(el) {
-   el.classList.remove('added')
-   el.innerHTML = 'Купить'
-}

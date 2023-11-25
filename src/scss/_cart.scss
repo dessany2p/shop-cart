@@ -69,6 +69,11 @@
       background-color: #EAEFF2;
       margin-top: 30px;
       max-width: 100%;
+
+      @media (max-width:460px) {
+            max-height: 40px;
+            margin-bottom: 10px;
+         }
    }
 
 .categories__name {
@@ -124,6 +129,10 @@
    font-family: PlusJakartaSans, serif;
    font-weight: normal;
    font-size: 24px;
+   @media (max-width: 560px) {
+         margin: 15px 30px 0 0;
+         font-size: 20px;
+      }
 }
 
 .price__product {
@@ -145,6 +154,9 @@
          margin: 0;
          width: 12%;
       }
+         @media (max-width: 560px) {
+            padding-left: 0;
+         }
 }
 
 .categories__name-item {
@@ -163,6 +175,7 @@
          @media (max-width:460px) {
             font-size: 11px;
             line-height: 1;
+            margin-left: 3%;
          }
 }
 
@@ -184,8 +197,11 @@
       }
          @media (max-width: 560px) {
             column-gap: 0px;
-            left: 50%;
+            left: 42%;
          }
+         // @media (max-width: 360px) {
+         //    left: 45%;
+         // }
 
    &__input {
       flex: 0 0 30px;
@@ -204,9 +220,13 @@
                font-size: 14px;
          }
             @media (max-width:460px) {
-               width: 15px;
-               height: 15px;
+               width: 20px;
+               height: 20px;
             }
+         @media (max-width:360px) {
+         width: 25px;
+         height: 20px;
+         }
       }
    }
    // .counter__buttons-container
@@ -214,6 +234,9 @@
    &__buttons-container {
       display: flex;
       flex-direction: column-reverse;
+      @media (max-width: 560px) {
+            flex-direction: row;
+         }
    }
    // .counter__button
    &__button {
@@ -230,7 +253,8 @@
       line-height: 80%;
 
          @media (max-width: 560px) {
-               font-size: small;
+               padding: 0 1px;
+               margin: 0 auto;
          }
    }
 
@@ -266,11 +290,11 @@
       }
          @media (max-width: 560px) {
             top: 30%;
-            font-size: 12px;
+            font-size: 15px;
          }
             @media (max-width:460px) {
-               font-size: 10px;
-               top: 20%;
+                  top: 25%;
+                  right: 11%;
             }
 }
 
@@ -340,6 +364,7 @@
    /* float: right; */
    font-size: 28px;
    font-weight: bold;
+   cursor: pointer;
 }
 
 .header-content {
@@ -352,10 +377,11 @@
    font-size: 18px;
    border: 1px solid rgba(0, 0, 0, 0.9);
    border-radius: 10px;
-   margin: 2px;
+   margin: 2px 20px;
    cursor: pointer;
    transition: .3s;
-   height: 25px;
+   // height: 25px;
+   padding: 5px;
 }
 
 #addBtn:hover {
@@ -369,10 +395,11 @@
    font-size: 18px;
    border: 1px solid rgba(0, 0, 0, 0.9);
    border-radius: 10px;
-   margin: 2px;
+   margin: 2px 20px;
    cursor: pointer;
    transition: .3s;
-   height: 25px;
+   // height: 25px;
+   padding: 5px;
 }
 
 #deleteBtn:hover {
