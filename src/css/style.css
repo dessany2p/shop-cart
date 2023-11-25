@@ -621,6 +621,11 @@ h6 {
   border: 1px solid #888;
   width: 30%;
 }
+@media (max-width: 560px) {
+  .modal-content {
+    width: 50%;
+  }
+}
 
 .close {
   position: absolute;
@@ -648,6 +653,12 @@ h6 {
   transition: 0.3s;
   padding: 5px;
 }
+@media (max-width: 560px) {
+  #addBtn {
+    width: 100%;
+    margin: 5px auto;
+  }
+}
 
 #addBtn:hover {
   background-color: rgba(17, 255, 0, 0.9);
@@ -664,6 +675,12 @@ h6 {
   cursor: pointer;
   transition: 0.3s;
   padding: 5px;
+}
+@media (max-width: 560px) {
+  #deleteBtn {
+    width: 100%;
+    margin: 5px auto;
+  }
 }
 
 #deleteBtn:hover {

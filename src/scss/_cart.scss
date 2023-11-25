@@ -354,6 +354,9 @@
    padding: 20px;
    border: 1px solid #888;
    width: 30%;
+   @media (max-width: 560px) {
+         width: 50%;
+      }
 }
 
 .close {
@@ -382,6 +385,10 @@
    transition: .3s;
    // height: 25px;
    padding: 5px;
+   @media (max-width: 560px) {
+         width: 100%;
+         margin: 5px auto;
+      }
 }
 
 #addBtn:hover {
@@ -400,6 +407,10 @@
    transition: .3s;
    // height: 25px;
    padding: 5px;
+   @media (max-width: 560px) {
+      width: 100%;
+      margin: 5px auto;
+   }
 }
 
 #deleteBtn:hover {
